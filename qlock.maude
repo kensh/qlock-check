@@ -1,0 +1,13 @@
+mod QLOCK is pr LABEL . pr PID . pr QUEUE .
+ sorts Var Sys . 
+ subsort Var < Sys .
+ op _ _ : Sys Sys -> Sys [assoc comm] .
+ op pc[_]:_ : Pid Label -> Var .
+ op queue:_ : Queue -> Var .
+ op tmp[_]:_ : Pid Queue -> Var .
+ vars Q R : Queue . 
+ var I : Pid .
+ rl [eq] : (pc[I]: rs) (queue: Q) => (pc[I]: ws) (queue: enq(Q,I)) .
+ crl [wt] : (pc[I]: ws) (queue: Q)             => (pc[I]: cs) (queue: Q) if top(Q) == I .
+ rl [dq] : (pc[I]: cs) (queue: Q) => (pc[I]: rs) (queue: deq(Q)) .
+endm
